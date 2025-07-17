@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  strapi:
+    build: .
+    container_name: strapi-app
+    ports:
+      - '1337:1337'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - DATABASE_CLIENT=sqlite
+      - NODE_ENV=development
+    restart: unless-stopped
+
