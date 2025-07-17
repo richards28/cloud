@@ -1,21 +1,22 @@
-# Use official Node.js image
 FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy only package.json and package-lock.json first for better layer caching
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy app files
+# Install nodemon globally for hot-reloading
+RUN npm install -g nodemon
+
+# Copy the rest of the application
 COPY . .
 
-# Build the Strapi admin panel
-RUN npm run build
-
-# Expose port
+# Expose Strapi port
 EXPOSE 1337
 
-# Start the Strapi server
-CMD ["npm", "start"]
+# Run in development mode with hot-reloading
+CMD ["npm", "run", "develop"]
